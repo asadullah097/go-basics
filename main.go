@@ -20,41 +20,48 @@ func main () {
 		var email string
 		var  userTickets uint
 	
-	//user inputs
-	fmt.Printf("Enter your first name: \n")
-	fmt.Scan(&firstName)
+		//user inputs
+		fmt.Printf("Enter your first name: \n")
+		fmt.Scan(&firstName)
 
-	// fmt.Printf("Enter your last name: \n")
-	// fmt.Scan(&lastName)
+		fmt.Printf("Enter your last name: \n")
+		fmt.Scan(&lastName)
 
-	// fmt.Printf("Enter your email: \n")
-	// fmt.Scan(&email)
+		fmt.Printf("Enter your email: \n")
+		fmt.Scan(&email)
 
-	fmt.Printf("Enter number of tickets: \n")
-	fmt.Scan(&userTickets)
-
-    if userTickets <= remingTickets {
-		remingTickets =remingTickets - userTickets
-	    bookings = append(bookings, firstName + " " + lastName)
+		fmt.Printf("Enter number of tickets: \n")
+		fmt.Scan(&userTickets)
 		
-		fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", firstName, lastName, userTickets, email)
-		fmt.Printf("%v tickets remaining for %v\n", remingTickets, conferenceName)
+		//validations
+		isValidName := len(firstName) >= 2 && len(lastName) >= 2
+		isValidEmail := strings.Contains(email, "@")
+		isValidTicketNumber := userTickets > 0 && userTickets <= remingTickets
 
-		firstNames:=[]string{}
-		for _,booking := range bookings {
-			var names =strings.Fields(booking)
-			firstNames = append(firstNames, names[0])
-		}
-		fmt.Printf("These all are in our bookings %v\n", firstNames)
-	
-		if remingTickets == 0 {
-			fmt.Println("Conference is booked out. Come back next year!")
-			break
-		}
-		}else {
-			fmt.Printf("We only have %v tickets remaining, so you can't book %v tickets\n", remingTickets, userTickets)
+   		if isValidName && isValidEmail && isValidTicketNumber {
+			remingTickets =remingTickets - userTickets
+			bookings = append(bookings, firstName + " " + lastName)
+			
+			fmt.Printf("Thank you %v %v for booking %v tickets. You will receive a confirmation email at %v\n", firstName, lastName, userTickets, email)
+			fmt.Printf("%v tickets remaining for %v\n", remingTickets, conferenceName)
+
+			firstNames:=[]string{}
+			for _,booking := range bookings {
+				var names =strings.Fields(booking)
+				firstNames = append(firstNames, names[0])
+			}
+			fmt.Printf("These all are in our bookings %v\n", firstNames)
+	    }else {
+			if !isValidName {
+				fmt.Println("Invalid name, please try again")
+			}
+			if !isValidEmail {
+				fmt.Println("Invalid email, please try again")
+			}
+			if !isValidTicketNumber {
+				fmt.Println("Invalid ticket number, please try again")
+			}
 			continue
-
 		}
-	}
+    }
 }
